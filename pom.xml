@@ -16,6 +16,9 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<jddd.version>0.1.0</jddd.version>
+		<commons-text.version>1.8</commons-text.version>
+		<archunit.version>0.14.1</archunit.version>
 	</properties>
 
 	<dependencies>
@@ -32,7 +35,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-
 		<!-- Spring Dev tools -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -52,6 +54,20 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.jddd</groupId>
+			<artifactId>jddd-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jddd</groupId>
+			<artifactId>jddd-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>${commons-text.version}</version>
+		</dependency>
+
 
 		<!-- Test Dependencies -->
 		<dependency>
@@ -65,7 +81,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit</artifactId>
+			<version>${archunit.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jddd</groupId>
+				<artifactId>jddd</artifactId>
+				<version>${jddd.version}</version>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
