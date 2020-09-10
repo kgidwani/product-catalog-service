@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "default.pagination.offset.value",
+      "type": "java.lang.String",
+      "description": "Description for default.pagination.offset.value."
+    },
+    {
+      "name": "default.pagination.limit.value",
+      "type": "java.lang.String",
+      "description": "Description for default.pagination.limit.value."
+    }
+  ]
+}
