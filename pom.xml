@@ -60,6 +60,17 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
@@ -92,8 +103,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.zalando</groupId>
-			<artifactId>problem-spring-web</artifactId>
+			<artifactId>problem-spring-web-starter</artifactId>
 			<version>${problem-spring-web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-afterburner</artifactId>
 		</dependency>
 
 		<!-- Test Dependencies -->

@@ -23,11 +23,11 @@ public class Catalog extends AbstractAggregateRoot<Catalog> {
 
     @NotNull
     @EqualsAndHashCode.Include
-    private final CatalogId id;
+    private CatalogId id;
 
     @NotBlank
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
 
     @Valid
     private Set<Category> categories;
