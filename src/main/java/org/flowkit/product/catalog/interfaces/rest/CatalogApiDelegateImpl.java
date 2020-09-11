@@ -2,9 +2,7 @@ package org.flowkit.product.catalog.interfaces.rest;
 
 import org.flowkit.product.catalog.application.internal.commandservices.CatalogCommandService;
 import org.flowkit.product.catalog.application.internal.queryservices.CatalogQueryService;
-import org.flowkit.product.catalog.domain.model.commands.CreateCatalogCommand;
-import org.flowkit.product.catalog.domain.model.commands.CreateCatalogCommandResult;
-import org.flowkit.product.catalog.domain.model.commands.UpdateCatalogCommand;
+import org.flowkit.product.catalog.domain.model.commands.*;
 import org.flowkit.product.catalog.domain.model.queries.FindCatalogsResult;
 import org.flowkit.product.catalog.interfaces.rest.dto.Catalog;
 import org.flowkit.product.catalog.interfaces.rest.dto.CatalogCreate;
@@ -31,9 +29,9 @@ public class CatalogApiDelegateImpl implements CatalogApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Catalog> createCatalog(CatalogCreate catalogCreateDTO) {
+    public ResponseEntity<Catalog> createCatalog(CatalogCreate createCatalogDTO) {
 
-        CreateCatalogCommand command = getCreateCatalogCommand(catalogCreateDTO);
+        CreateCatalogCommand command = getCreateCatalogCommand(createCatalogDTO);
         CreateCatalogCommandResult result = catalogCommandService.createCatalog(command);
 
         if (!result.isSuccess()) {
@@ -41,6 +39,27 @@ public class CatalogApiDelegateImpl implements CatalogApiDelegate {
         }
         Catalog catalogDTO = getCatalogDTO(result.getCatalog());
         return ResponseEntity.status(HttpStatus.CREATED).body(catalogDTO);
+    }
+
+    @Override
+    public ResponseEntity<Catalog> patchCatalog(String id, CatalogUpdate updateCatalogDTO) {
+        UpdateCatalogCommand updateCatalogCommand = getUpdateCatalogCommand(id, updateCatalogDTO);
+
+        var result = catalogCommandService.updateCatalog(updateCatalogCommand);
+        if (!result.isSuccess()) {
+            throw Problem.valueOf(Status.NOT_FOUND, result.getError());
+        }
+        return ResponseEntity.ok().body(getCatalogDTO(result.getCatalog()));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCatalog(String id) {
+        DeleteCatalogCommand command = new DeleteCatalogCommand(id);
+        DeleteCatalogCommandResult result = catalogCommandService.deleteCatalog(command);
+        if (!result.isSuccess()) {
+            throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, result.getError());
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -61,23 +80,6 @@ public class CatalogApiDelegateImpl implements CatalogApiDelegate {
         HttpHeaders responseHeaders = getHttpHeaders(result);
 
         return ResponseEntity.ok().headers(responseHeaders).body(catalogs);
-    }
-
-    @Override
-    public ResponseEntity<Catalog> patchCatalog(String id, CatalogUpdate catalogDTO) {
-        UpdateCatalogCommand updateCatalogCommand = getUpdateCatalogCommand(id, catalogDTO);
-
-        var result = catalogCommandService.updateCatalog(updateCatalogCommand);
-        if (result.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(getCatalogDTO(result.get()));
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteCatalog(String id) {
-        catalogCommandService.deleteCatalog(id);
-        return ResponseEntity.ok().build();
     }
 
     private UpdateCatalogCommand getUpdateCatalogCommand(String id, CatalogUpdate catalog) {

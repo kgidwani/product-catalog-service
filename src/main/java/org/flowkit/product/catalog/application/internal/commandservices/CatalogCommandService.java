@@ -1,15 +1,11 @@
 package org.flowkit.product.catalog.application.internal.commandservices;
 
 import org.flowkit.product.catalog.domain.model.aggregates.Catalog;
-import org.flowkit.product.catalog.domain.model.commands.CreateCatalogCommand;
-import org.flowkit.product.catalog.domain.model.commands.CreateCatalogCommandResult;
-import org.flowkit.product.catalog.domain.model.commands.UpdateCatalogCommand;
+import org.flowkit.product.catalog.domain.model.commands.*;
 import org.flowkit.product.catalog.infrastructure.repositories.CatalogRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,13 +30,14 @@ public class CatalogCommandService {
 
     }
 
-    public Optional<Catalog> updateCatalog(@Valid UpdateCatalogCommand updateCatalogCommand) {
+    public UpdateCatalogCommandResult updateCatalog(@Valid UpdateCatalogCommand updateCatalogCommand) {
 
         CatalogId catalogId = getCatalogId(updateCatalogCommand.getId());
 
         Optional<Catalog> result = catalogRepository.findById(catalogId);
+
         if (result.isEmpty()) {
-            return result;
+            return new UpdateCatalogCommandResult("Catalog with id " + catalogId + " not found");
         }
 
         Catalog catalog = result.get();
@@ -50,15 +47,13 @@ public class CatalogCommandService {
         if (updateCatalogCommand.isDescriptionChanged()) {
             catalog.setDescription(updateCatalogCommand.getDescription());
         }
-        return Optional.of(catalogRepository.save(catalog));
+        return new UpdateCatalogCommandResult(catalogRepository.save(catalog));
     }
 
-    public void deleteCatalog(@NotNull CatalogId id) {
+    public DeleteCatalogCommandResult deleteCatalog(DeleteCatalogCommand deleteCatalogCommand) {
+        CatalogId id = getCatalogId(deleteCatalogCommand.getId());
         catalogRepository.deleteById(id);
-    }
-
-    public void deleteCatalog(@NotBlank String id) {
-        deleteCatalog(getCatalogId(id));
+        return new DeleteCatalogCommandResult();
     }
 
     private CatalogId getCatalogId(String id) {
