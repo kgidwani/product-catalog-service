@@ -17,6 +17,7 @@ import java.util.UUID;
 
 @AggregateRoot
 @Getter
+@Setter
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Catalog extends AbstractAggregateRoot<Catalog> {

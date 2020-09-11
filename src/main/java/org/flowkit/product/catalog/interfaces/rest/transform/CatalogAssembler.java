@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(uses = StringToUUIDMapper.class)
 public interface CatalogAssembler {
 
@@ -18,5 +20,7 @@ public interface CatalogAssembler {
     @Mapping(source = "id.id", target = "id")
     @Mapping(target = "category", ignore = true)
     org.flowkit.product.catalog.interfaces.rest.dto.Catalog toDTOFromAggregate(Catalog catalog);
+
+    List<org.flowkit.product.catalog.interfaces.rest.dto.Catalog> toDTOFromAggregate(List<Catalog> catalogs);
 
 }

@@ -30,11 +30,6 @@ paths:
       description: This operation list or find Catalog entities
       operationId: findCatalogs
       parameters:
-        - name: fields
-          in: query
-          description: Comma-separated properties to be provided in response
-          schema:
-            type: string
         - name: offset
           in: query
           description: Requested index for start of resources to be provided in response
@@ -152,11 +147,6 @@ paths:
           in: path
           description: Identifier of the Catalog
           required: true
-          schema:
-            type: string
-        - name: fields
-          in: query
-          description: Comma-separated properties to provide in response
           schema:
             type: string
       responses:

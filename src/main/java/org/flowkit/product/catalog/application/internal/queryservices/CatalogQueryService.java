@@ -40,7 +40,7 @@ public class CatalogQueryService {
         return findCatalog(catalogId);
     }
 
-    public FindCatalogsResult findCatalogs(String fields, Integer offset, Integer limit) {
+    public FindCatalogsResult findCatalogs(Integer offset, Integer limit) {
 
         Pageable pageRequest = createPageRequest(offset, limit);
         Page<Catalog> page = catalogRepository.findAll(pageRequest);
